@@ -1,0 +1,37 @@
+﻿@page "/characters"
+@inject RickAndMortyService RickAndMortyService
+
+<h3>Personajes de Rick and Morty</h3>
+<h1>@strException</h1>
+@if (characters == null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    @foreach (var character in characters)
+    {
+        <div class="card">
+            <img src="@character.Image" style="width:200px" alt="@character.Name" class="card-image" />
+            <h4>@character.Name</h4>
+            <p><strong>Estatus:</strong> @character.Status</p>
+        </div>
+    }    
+}
+
+@code {
+    private List<Character> characters;
+    private string strException;
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            characters = await RickAndMortyService.GetCharactersAsync();
+        }
+        catch (Exception ex)
+        {
+            strException = ex.Message;          
+        }
+      
+    }
+}
